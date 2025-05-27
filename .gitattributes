@@ -8,10 +8,8 @@
 /UserSettings/
 /MemoryCaptures/
 sysinfo.txt
-
 # Crash logs
 crash_*.txt
-
 # Visual Studio, JetBrains Rider, VS Code files
 *.csproj
 *.unityproj
@@ -30,44 +28,34 @@ crash_*.txt
 .idea/
 *.sln.iml
 .vscode/
-
 # Gradle files
 .gradle
 build/
-
 # Derived data cache
 /DerivedDataCache/
-
 # Build outputs
 *.apk
 *.aab
 *.unitypackage
-
 # Asset Store tools
 /[Aa]ssets/AssetStoreTools*
-
 # JetBrains IDEs
 *.iml
 *.ipr
 *.iws
-
 # System junk
 .DS_Store
 Thumbs.db
 desktop.ini
-
 # Unity Cloud Build
 /[Cc]ollab/
 /.cloud/
-
 # Node/npm/yarn folders
 node_modules/
 .yarn/
 .yarnrc.yml
-
 # Logs
 *.log
-
 # Unity Addressables (cache files)
 /Assets/AddressableAssetsData/*/*.bin
 /Assets/AddressableAssetsData/*/*.bin.meta
@@ -75,15 +63,12 @@ node_modules/
 /Assets/AddressableAssetsData/*/*.link.meta
 /Assets/AddressableAssetsData/*/*.catalog
 /Assets/AddressableAssetsData/*/*.catalog.meta
-
 # Build Report
 *.buildreport
-
 # Cache folders
 .cache/
-
 # JetBrains Local History
 .idea/.idea.LocalHistory
-
 # Environment variables
 .env
+*.fbx filter=lfs diff=lfs merge=lfs -text
