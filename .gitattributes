@@ -72,3 +72,4 @@ node_modules/
 # Environment variables
 .env
 *.fbx filter=lfs diff=lfs merge=lfs -text
+Assets/Prefabs/AI/Chor/Chor.fbx filter=lfs diff=lfs merge=lfs -text
