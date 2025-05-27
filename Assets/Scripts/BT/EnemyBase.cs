@@ -6,55 +6,50 @@ public class EnemyBase : MonoBehaviour
 {
     public BlackboardBase blackboard { get; private set; }
     public EnemyFSMController fsmController { get; private set; }
+    public int damage;
 
     private void Awake()
     {
-        // Gọi initializer setup BB trước
         GetComponent<EnemyBlackboardInitializer>()?.Initialize();
-
-        // Gán BB nếu chưa có
+        blackboard = GetComponent<BlackboardBase>();
         if (blackboard == null)
-            blackboard = GetComponent<BlackboardBase>();
-
-        if (blackboard == null)
-            Debug.LogWarning($"{name} - Blackboard chưa được gán sau Initialize.");
-
+        {
+            Debug.LogError("Blackboard is missing on " + gameObject.name);
+        }
         fsmController = new EnemyFSMController();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-        fsmController.ChangeState(new EnemyPatrolState(this));
+        if (fsmController != null)
+        {
+            fsmController.ChangeState(new EnemyPatrolState(this));
+        }
+        else
+        {
+            Debug.LogError("FSM Controller is null on " + gameObject.name);
+        }
     }
 
     protected virtual void Update()
     {
         UpdateVision();
         fsmController?.Update();
-        SeeEnemy();
+        SeeEnemy();        
     }
 
     private void UpdateVision()
     {
         if (Target == null)
         {
-            blackboard.Set(BBKeys.CanSeeEnemy, false);
+            blackboard?.Set(BBKeys.CanSeeEnemy, false);
             return;
         }
 
         float distance = Vector3.Distance(transform.position, Target.transform.position);
-        blackboard.Set(BBKeys.CanSeeEnemy, distance <= 10f);
+        blackboard?.Set(BBKeys.CanSeeEnemy, distance <= 10f);
     }
-
-    private void SeeEnemy()
-    {
-        if (Target != null && CanSeeEnemy)
-        {
-            fsmController.ChangeState(new EnemyChaseState(this));
-        }
-
-    }
-
-    public GameObject Target => blackboard.Get<GameObject>(BBKeys.Target);
-    public bool CanSeeEnemy => blackboard.Get<bool>(BBKeys.CanSeeEnemy);
+    protected virtual void SeeEnemy() { }
+    public GameObject Target => blackboard?.Get<GameObject>(BBKeys.Target);
+    public bool CanSeeEnemy => blackboard?.Get<bool>(BBKeys.CanSeeEnemy) ?? false;
 }

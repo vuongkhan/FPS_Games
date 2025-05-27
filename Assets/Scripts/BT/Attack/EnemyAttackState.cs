@@ -15,5 +15,12 @@ public class EnemyMeleeAttackState : FSMBase
 
     }
 
-    public override void Exit() => Debug.Log("Exit Attack State");
+    public override void Exit()
+    {
+
+        if (enemy.blackboard.TryGet<string>("currentAttack", out var _))
+        {
+            enemy.blackboard.Remove("currentAttack");
+        }
+    }
 }

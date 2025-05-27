@@ -12,6 +12,16 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 playerVelocity;
     private float gravity = -9.81f;
 
+    // Dash settings
+    public float DashSpeed = 20f;
+    public float DashDuration = 0.2f;
+    public float DashCooldown = 1f;
+
+    private bool isDashing = false;
+    private float dashTime = 0f;
+    private float dashCooldownTimer = 0f;
+    private Vector3 dashDirection;
+
     private void Awake()
     {
         Instance = this;
@@ -29,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         HandleMouseLook();
+        HandleDash();
         HandleMovement();
     }
 
@@ -51,8 +62,10 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleMovement()
     {
+        if (isDashing) return;
+
         float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical"); 
+        float moveZ = Input.GetAxis("Vertical");
 
         Vector3 moveDirection = transform.right * moveX + transform.forward * moveZ;
         characterController.Move(moveDirection * MoveSpeed * Time.deltaTime);
@@ -65,5 +78,39 @@ public class PlayerMovement : MonoBehaviour
         playerVelocity.y += gravity * Time.deltaTime;
         characterController.Move(playerVelocity * Time.deltaTime);
     }
-    
+
+    void HandleDash()
+    {
+        if (isDashing)
+        {
+            characterController.Move(dashDirection * DashSpeed * Time.deltaTime);
+            dashTime -= Time.deltaTime;
+            if (dashTime <= 0f)
+            {
+                isDashing = false;
+                dashCooldownTimer = DashCooldown;
+            }
+            return;
+        }
+
+        if (dashCooldownTimer > 0f)
+        {
+            dashCooldownTimer -= Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && dashCooldownTimer <= 0f)
+        {
+            float moveX = Input.GetAxisRaw("Horizontal");
+            float moveZ = Input.GetAxisRaw("Vertical");
+
+            Vector3 inputDirection = transform.right * moveX + transform.forward * moveZ;
+
+            if (inputDirection != Vector3.zero)
+            {
+                dashDirection = inputDirection.normalized;
+                isDashing = true;
+                dashTime = DashDuration;
+            }
+        }
+    }
 }

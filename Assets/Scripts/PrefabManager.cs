@@ -44,8 +44,6 @@ public class PrefabManager : MonoBehaviour
     {
         if (prefabDict.TryGetValue(key, out var prefab))
             return prefab;
-
-        Debug.LogWarning($"⚠️ PrefabManager: Không tìm thấy key '{key}'");
         return null;
     }
 }

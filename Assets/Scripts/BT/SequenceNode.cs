@@ -2,8 +2,8 @@
 
 public class SequenceNode : Node
 {
-    private List<Node> children = new List<Node>(); // 🔥 Thêm danh sách children
-    private int currentTaskIndex = 0; // Chỉ số của Task hiện tại
+    private List<Node> children = new List<Node>();
+    private int currentTaskIndex = 0; 
 
     public void AddChild(Node child) => children.Add(child);
 
@@ -11,7 +11,7 @@ public class SequenceNode : Node
     {
         if (currentTaskIndex >= children.Count)
         {
-            currentTaskIndex = 0; // Reset lại sau khi hoàn thành tất cả task
+            currentTaskIndex = 0;
             return NodeState.SUCCESS;
         }
 
@@ -19,16 +19,16 @@ public class SequenceNode : Node
 
         if (result == NodeState.SUCCESS)
         {
-            currentTaskIndex++; // Chuyển sang Task tiếp theo nếu thành công
-            return NodeState.RUNNING; // Đánh dấu rằng Sequence vẫn đang chạy
+            currentTaskIndex++;
+            return NodeState.RUNNING; 
         }
 
         if (result == NodeState.FAILURE)
         {
-            currentTaskIndex = 0; // Reset nếu có Task thất bại
+            currentTaskIndex = 0; 
             return NodeState.FAILURE;
         }
 
-        return NodeState.RUNNING; // Nếu Task đang chạy, giữ nguyên
+        return NodeState.RUNNING; 
     }
 }

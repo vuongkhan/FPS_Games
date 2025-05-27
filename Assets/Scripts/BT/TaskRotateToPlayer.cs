@@ -3,7 +3,7 @@
 public class TaskRotateToPlayer : Node
 {
     private float rotateSpeed = 5f;
-    private float delayTime = 2f;
+    private float delayTime = 1f;
     private float startTime = -1f;
 
     public override NodeState Evaluate(BlackboardBase blackboard)
@@ -20,8 +20,6 @@ public class TaskRotateToPlayer : Node
             Quaternion targetRotation = Quaternion.LookRotation(dir);
             self.rotation = Quaternion.RotateTowards(self.rotation, targetRotation, rotateSpeed * Time.deltaTime * 100f);
         }
-
-        // Bắt đầu đếm thời gian xoay
         if (startTime < 0f)
             startTime = Time.time;
 

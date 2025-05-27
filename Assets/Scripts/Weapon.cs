@@ -197,7 +197,6 @@ public class Weapon : MonoBehaviour
         
         WeaponInfoUI.Instance.UpdateClipInfo(this);
 
-        //the state will only change next frame, so we set it right now.
         m_CurrentState = WeaponState.Firing;
         
         m_Animator.SetTrigger("fire");

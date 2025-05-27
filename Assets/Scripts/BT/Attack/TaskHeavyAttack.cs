@@ -10,19 +10,16 @@ public class TaskHeavyAttack : Node
     {
         if (!blackboard.TryGet<float>("stamina", out var stamina))
         {
-            Debug.LogWarning("⚠️ Không có giá trị Stamina trong blackboard.");
             return NodeState.FAILURE;
         }
         if (!blackboard.TryGet<Animator>("animator", out var animator))
         {
-            Debug.LogWarning("❌ Không tìm thấy Animator trong blackboard!");
             return NodeState.FAILURE;
         }
         if (!blackboard.TryGet<string>(CurrentAttackKey, out var currentAttack) || currentAttack != AttackKey)
         {
             if (stamina < StaminaCost)
             {
-                Debug.Log("🪫 Không đủ stamina để dùng Heavy Attack.");
                 return NodeState.FAILURE;
             }
 
@@ -32,7 +29,6 @@ public class TaskHeavyAttack : Node
             float newStamina = stamina - StaminaCost;
             blackboard.Set("stamina", newStamina);
 
-            Debug.Log($"💥 Heavy Attack bắt đầu! Stamina còn: {newStamina}");
             return NodeState.RUNNING;
         }
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
@@ -40,11 +36,9 @@ public class TaskHeavyAttack : Node
         {
             animator.Play("Idle");
             blackboard.Remove(CurrentAttackKey);
-            Debug.Log("✅ Heavy Attack hoàn tất.");
             if (blackboard.TryGet<EnemyBase>("enemy", out var enemy))
             {
                 enemy.fsmController.ForceChangeState(new EnemyChaseState(enemy));
-                Debug.Log("🏃‍♂️ Đã chuyển sang EnemyChaseState sau HeavyAttack.");
             }
 
             return NodeState.SUCCESS;

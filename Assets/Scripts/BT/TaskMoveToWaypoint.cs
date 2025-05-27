@@ -10,22 +10,18 @@ public class TaskMoveToWaypoint : Node
     {
         if (!TryGetData(bb, out var agent, out var animator, out var waypoint))
             return NodeState.FAILURE;
-
-        // Nếu không có đường đi hoặc gần tới thì đặt waypoint
         if (!agent.hasPath || agent.remainingDistance <= agent.stoppingDistance)
         {
             agent.SetDestination(waypoint.position);
-            timer = 0f; // reset timer khi bắt đầu đi
+            timer = 0f; 
         }
 
-        // Cập nhật animation speed (nếu có animator)
         if (animator != null)
         {
             float speed = agent.velocity.magnitude;
             animator.SetFloat("Speed", speed);
         }
 
-        // Đã tới nơi
         if (!agent.pathPending && agent.remainingDistance < 0.1f)
         {
             AdvanceToNextWaypoint(bb);
@@ -37,7 +33,6 @@ public class TaskMoveToWaypoint : Node
         // Timeout
         if ((timer += Time.deltaTime) >= TimeoutDuration)
         {
-            Debug.LogWarning("⏳ Timeout! AI bị kẹt, reset đường đi.");
             agent.ResetPath();
             if (animator != null)
                 animator.SetFloat("Speed", 0f);

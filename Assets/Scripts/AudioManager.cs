@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour
         AudioClip clip = GetClip(clipName);
         if (clip == null)
         {
-            Debug.LogWarning($"⚠️ Không tìm thấy âm thanh: {clipName} trong Resources/Sounds/");
+            Debug.LogWarning("Cannot find sound");
             return;
         }
 
@@ -35,12 +35,12 @@ public class AudioManager : MonoBehaviour
 
         AudioSource audioSource = tempGO.AddComponent<AudioSource>();
         audioSource.clip = clip;
-        audioSource.spatialBlend = 1f; // 3D
+        audioSource.spatialBlend = 1f; 
         audioSource.pitch = pitchRandomized ? Random.Range(0.85f, 1.15f) : 1f;
         audioSource.volume = volume;
         audioSource.Play();
 
-        Destroy(tempGO, clip.length / audioSource.pitch); // Tự huỷ sau khi xong
+        Destroy(tempGO, clip.length / audioSource.pitch); 
     }
 
     private AudioClip GetClip(string name)

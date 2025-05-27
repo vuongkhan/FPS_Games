@@ -9,7 +9,6 @@ public static class BBKeys
     public const string Health = "health";
     public const string EnemyList = "enemyList";
     public const string Stamina = "stamina";
-    // Thêm các key khác ở đây nếu cần
 }
 public class BlackboardData
 {

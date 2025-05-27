@@ -18,7 +18,6 @@ public class TaskLookAround : Node
         {
             animator.SetTrigger("LookAround");
             blackboard.Set(LookingKey, true);
-            Debug.Log("👀 AI bắt đầu nhìn quanh...");
         }
 
         timer += Time.deltaTime;

@@ -1,11 +1,5 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.SceneManagement;
-#endif
+﻿using UnityEngine;
+using System.Collections;
 
 public class GameSystem : MonoBehaviour
 {
@@ -18,6 +12,7 @@ public class GameSystem : MonoBehaviour
 
     private int m_Score = 0;
     private int m_killedCount = 0;
+    private int m_totalEnemyCount = 0;
 
     void Awake()
     {
@@ -31,19 +26,30 @@ public class GameSystem : MonoBehaviour
             return;
         }
 
-        // Instantiate startup prefabs
         foreach (var prefab in StartPrefabs)
         {
             Instantiate(prefab);
         }
 
-        PoolSystem.Create(); // Assuming you still use PoolSystem for VFX, etc.
+        PoolSystem.Create();
     }
 
     void Start()
     {
-        // Không cần gọi WorldAudioPool.Init() nữa
         MainMenuUI.Instance.Display();
+
+    }
+
+    public void StartGame()
+    {
+        START_GAME = true;
+        Controller.Instance.DisplayWeapon(true);
+
+        // 🔥 Đếm enemy trong scene dựa trên tag
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        m_totalEnemyCount = enemies.Length;
+        Debug.Log(enemies);
+        Debug.Log($"[GameSystem] Total enemies at start: {m_totalEnemyCount}");
     }
 
     public void TargetDestroyed(int score)
@@ -53,16 +59,12 @@ public class GameSystem : MonoBehaviour
 
         GameSystemInfo.Instance.UpdateScore(m_Score);
 
-        if (SpawnManager.CanFinishGame(m_killedCount))
+        Debug.Log($"[GameSystem] Enemy killed. {m_killedCount}/{m_totalEnemyCount}");
+
+        if (m_killedCount >= m_totalEnemyCount)
         {
             StartCoroutine(WinGame());
         }
-    }
-
-    public void StartGame()
-    {
-        START_GAME = true;
-        Controller.Instance.DisplayWeapon(true);
     }
 
     IEnumerator WinGame()
@@ -76,5 +78,7 @@ public class GameSystem : MonoBehaviour
         FinalScoreUI.Instance.Display();
         GameSystemInfo.Instance.gameObject.SetActive(false);
         WeaponInfoUI.Instance.gameObject.SetActive(false);
+
+        Debug.Log("[GameSystem] 🎉 YOU WIN!");
     }
 }

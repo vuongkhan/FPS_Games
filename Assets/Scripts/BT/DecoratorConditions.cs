@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public enum ConditionMode
 {
-    AllMustPass,   // AND
-    AnyCanPass,    // OR
-    Invert         // NOT (áp dụng 1 điều kiện)
+    AllMustPass,   
+    AnyCanPass,    
+    Invert       
 }
 public class DecoratorConditions : Node
 {
@@ -24,7 +24,6 @@ public class DecoratorConditions : Node
 
     public override NodeState Evaluate(BlackboardBase blackboard)
     {
-        // Nếu đang RUNNING => tiếp tục task mà không check điều kiện nữa
         if (isRunning)
         {
             var runningResult = child.Evaluate(blackboard);
@@ -34,14 +33,10 @@ public class DecoratorConditions : Node
 
             return runningResult;
         }
-
-        // Nếu không đang chạy → check điều kiện
         if (!CheckConditions(blackboard))
         {
             return NodeState.FAILURE;
         }
-
-        // Điều kiện pass → bắt đầu task
         var result = child.Evaluate(blackboard);
 
         isRunning = (result == NodeState.RUNNING);

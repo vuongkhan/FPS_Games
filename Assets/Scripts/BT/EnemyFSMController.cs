@@ -10,7 +10,6 @@ public class EnemyFSMController
     {
         if (CurrentState == null || newState.Priority > CurrentState.Priority)
         {
-            Debug.Log($"🔁 FSM: Chuyển từ [{CurrentState?.GetType().Name ?? "None"}] → [{newState.GetType().Name}]");
 
             CurrentState?.Exit();
             CurrentState = newState;
@@ -18,12 +17,12 @@ public class EnemyFSMController
         }
         else
         {
-            Debug.Log($"⚠️ FSM BLOCK: Không thể chuyển từ [{CurrentState.Priority}] sang [{newState.Priority}] vì thấp ưu tiên.");
+            Debug.Log($"⚠️ FSM BLOCK: Cannot Change from [{CurrentState.Priority}] to [{newState.Priority}].");
         }
     }
     public void ForceChangeState(FSMBase newState)
     {
-        Debug.Log($"💥 FSM FORCE: Ép chuyển từ [{CurrentState?.GetType().Name ?? "None"}] → [{newState.GetType().Name}]");
+        Debug.Log($"💥 FSM FORCE: Change from [{CurrentState?.GetType().Name ?? "None"}] to [{newState.GetType().Name}]");
 
         CurrentState?.Exit();
         CurrentState = newState;

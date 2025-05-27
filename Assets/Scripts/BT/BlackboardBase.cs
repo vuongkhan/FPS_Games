@@ -2,26 +2,8 @@
 
 public class BlackboardBase : MonoBehaviour
 {
-    public BlackboardData data = new();
-    public AISkillManager skillManager;
+    public BlackboardData data = new(); 
 
-    private void Awake()
-    {
-        if (skillManager == null)
-        {
-            skillManager = GetComponent<AISkillManager>();
-            if (skillManager == null)
-            {
-                skillManager = gameObject.AddComponent<AISkillManager>();
-                Debug.LogWarning($"[Blackboard] Auto-added AISkillManager to {gameObject.name}");
-            }
-        }
-    }
-
-    public void TickSkillCooldowns(float deltaTime)
-    {
-        skillManager?.TickAll(deltaTime);
-    }
     public void TrySetDefault<T>(string key, T value)
     {
         data.TrySetDefault(key, value);
