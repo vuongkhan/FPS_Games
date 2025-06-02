@@ -156,8 +156,4 @@ public class Controller : MonoBehaviour
     {
         WeaponPosition.gameObject.SetActive(display);
     }
-    public void SwitchForm()
-    {
-        Debug.Log("BeastForm");
-    }
 }
